@@ -5,8 +5,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev" : "nodemon api/index.js",
-    "start" : "node api/index.js"
+    "dev": "nodemon api/index.js",
+    "start": "node api/index.js"
   },
   "repository": {
     "type": "git",
@@ -19,7 +19,9 @@
   },
   "homepage": "https://github.com/Law-room/Homy#readme",
   "dependencies": {
+    "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "mongoose": "^7.5.3",
     "nodemon": "^3.0.1"
   }
 }
