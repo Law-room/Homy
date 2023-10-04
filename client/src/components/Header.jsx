@@ -21,8 +21,11 @@ export default function Header() {
             <Link to='/about'>
                 <li className='hidden sm:inline hover:cursor-pointer hover:underline'>About</li>
             </Link>
+            <Link to='/sign-up'>
+                <li className='inline hover:cursor-pointer hover:underline'>Sign up</li>
+            </Link>
             <Link to='/sign-in'>
-                <li className='inline hover:cursor-pointer hover:underline'>Sign in</li>
+                <li className='inline hover:cursor-pointer hover:underline bg-green-600 px-4 py-2 rounded-lg m'>Sign in</li>
             </Link>
 
         </ul>
