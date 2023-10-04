@@ -1,19 +1,64 @@
+import { useState } from 'react';
 import {BiLogoGoogle} from 'react-icons/bi'
 import { BiLogoFacebook } from 'react-icons/bi';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function SignUp() {
+  const [formData, setFormData] = useState({})
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
+  const navigate = useNavigate()
+
+  const handleChange = (event) => {
+    setFormData(
+      {
+        ...formData,
+        [event.target.id]: event.target.value,
+      }
+    )
+  }
+
+  
+
+  const handleSumbit = async (event) => {
+    event.preventDefault()
+    try {
+        setLoading(true)
+        const res = await fetch('/api/auth/signup', 
+        {
+          method : 'POST',
+          headers:{
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(formData)
+        })
+        const data = await res.json()
+        if (data.success===false){
+          setError(data.message);
+          setLoading(false);
+          return;
+        }
+        setLoading(false)
+        setError(null)
+        navigate('/sign-in')
+      
+    } catch (error) {
+      setLoading(false)
+      setError(error.message)
+    }
+  }
   return (
     <div className="flex text-zinc-200 flex-col justify-center items-center ">
-        <hi className=" text-3xl text-zinc-300 font-semibold text-center my-7">
+        <h1 className=" text-3xl text-zinc-300 font-semibold text-center my-7">
           Sign Up
-        </hi>
-        <form className="flex flex-col gap-4 w-96 ">
-          <input type='text' placeholder="Username" className="p-3 rounded-lg border border-zinc-700 bg-zinc-800 text-zinc-200 font-medium" id="username"/>
-          <input type='email' placeholder="Email" className=" p-3 rounded-lg border border-zinc-700 bg-zinc-800 text-zinc-200 font-medium" id="email"/>
-          <input type='password' placeholder="Password" className=" p-3 rounded-lg border border-zinc-700 bg-zinc-800 text-zinc-200 font-medium" id="password"/>
-          <button className="p-3 bg-green-600 rounded-lg mt-5 w-full hover:bg-green-400 transition duration-300 disabled:opacity-50">
-            Sign Up
+        </h1>
+        <form onSubmit={handleSumbit} className="flex flex-col gap-4 w-96 ">
+          <input type='text' placeholder="Username" className="p-3 rounded-lg border border-zinc-700 bg-zinc-800 text-zinc-200 font-medium" id="username" onChange={handleChange}/>
+          <input type='email' placeholder="Email" className=" p-3 rounded-lg border border-zinc-700 bg-zinc-800 text-zinc-200 font-medium" id="email" onChange={handleChange}/>
+          <input type='password' placeholder="Password" className=" p-3 rounded-lg border border-zinc-700 bg-zinc-800 text-zinc-200 font-medium" id="password" onChange={handleChange}/>
+          {error && <p className='text-red-400'>{error}</p>}
+          <button disabled={loading} className="p-3 bg-green-600 rounded-lg mt-5 w-full hover:bg-green-400 transition duration-300 disabled:opacity-50">
+            {loading? 'Loading...' : 'Sign Up'}
           </button>
         </form>
         <div className="flex w-96 gap-4 text-xl  ">
